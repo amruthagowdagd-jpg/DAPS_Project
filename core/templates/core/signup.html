@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Signup - DAPS{% endblock %}
+{% block content %}
+<div class="glass" style="max-width: 400px; margin: 50px auto; text-align: center;">
+    <h2 class="accent-text">Join DAPS</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div style="margin-bottom: 15px; text-align: left;">
+                <label style="display: block; margin-bottom: 5px;">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div style="color: #ff4d4d; font-size: 0.8rem;">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn-primary" style="width: 100%;">Create Account</button>
+    </form>
+    <p style="margin-top: 20px;">Already have an account? <a href="{% url 'login' %}" class="accent-text">Login</a></p>
+</div>
+<style>
+    input {
+        width: 100%;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--glass-border);
+        border-radius: 8px;
+        color: white;
+        box-sizing: border-box;
+    }
+</style>
+{% endblock %}

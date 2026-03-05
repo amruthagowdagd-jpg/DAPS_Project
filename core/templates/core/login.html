@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Login - DAPS{% endblock %}
+{% block content %}
+<div class="glass" style="max-width: 400px; margin: 50px auto; text-align: center;">
+    <h2 class="accent-text">Welcome Back</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div style="margin-bottom: 15px; text-align: left;">
+            <label style="display: block; margin-bottom: 5px;">Username</label>
+            <input type="text" name="username" required>
+        </div>
+        <div style="margin-bottom: 15px; text-align: left;">
+            <label style="display: block; margin-bottom: 5px;">Password</label>
+            <input type="password" name="password" required>
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%;">Login</button>
+    </form>
+    <p style="margin-top: 20px;">Don't have an account? <a href="{% url 'signup' %}" class="accent-text">Signup</a></p>
+</div>
+<style>
+    input {
+        width: 100%;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--glass-border);
+        border-radius: 8px;
+        color: white;
+        box-sizing: border-box;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Profile - DAPS{% endblock %}
+{% block content %}
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div class="glass">
+        <h2 class="accent-text">My Profile</h2>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Bio:</strong> {{ profile.bio|default:"No bio yet." }}</p>
+        <hr style="border: 0.5px solid var(--glass-border); margin: 20px 0;">
+        <h3 class="accent-text">Partnership</h3>
+        {% if profile.partner %}
+            <p><strong>Current Partner:</strong> {{ profile.partner.user.username }}</p>
+        {% else %}
+            <p>You don't have a partner yet.</p>
+            <form method="post" style="margin-top: 20px;">
+                {% csrf_token %}
+                <label style="display: block; margin-bottom: 5px;">Find Partner (Username)</label>
+                <input type="text" name="search_user" style="width: 70%; padding: 8px; background: rgba(255,255,255,0.1); color: white; border: 1px solid var(--glass-border); border-radius: 5px;">
+                <button type="submit" class="btn-primary">Request</button>
+            </form>
+        {% endif %}
+    </div>
+
+    <div class="glass">
+        <h3 class="accent-text">Requests</h3>
+        <h4>Received</h4>
+        {% for req in received_requests %}
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                <span>{{ req.sender.username }}</span>
+                <form action="{% url 'accept_request' req.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-primary" style="padding: 5px 10px; font-size: 0.8rem;">Accept</button>
+                </form>
+            </div>
+        {% empty %}
+            <p>No pending requests.</p>
+        {% endfor %}
+
+        <h4 style="margin-top: 30px;">Sent</h4>
+        {% for req in sent_requests %}
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                <span>{{ req.receiver.username }}</span>
+                <span class="accent-text">{{ req.status }}</span>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

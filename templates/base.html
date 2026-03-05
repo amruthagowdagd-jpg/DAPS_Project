@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DAPS{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="glass" style="margin: 20px; display: flex; justify-content: space-between; align-items: center;">
+        <h1 style="margin: 0; font-size: 1.5rem;" class="accent-text">DAPS</h1>
+        <div>
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" style="color: white; margin-right: 15px; text-decoration: none;">Dashboard</a>
+                <a href="{% url 'profile' %}" style="color: white; margin-right: 15px; text-decoration: none;">Profile</a>
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-primary" style="padding: 5px 15px;">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" style="color: white; margin-right: 15px; text-decoration: none;">Login</a>
+                <a href="{% url 'signup' %}" class="btn-primary" style="text-decoration: none;">Signup</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main style="padding: 0 20px;">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="glass" style="margin-bottom: 20px; border-color: var(--accent-color);">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
